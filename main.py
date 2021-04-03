@@ -1,7 +1,10 @@
 import tkinter 
 from tkinter import *
 from tkinter import filedialog as fd
-
+import xml.etree.ElementTree as ET
+from ListaEncabezados import ListaEncabezados
+from Ortogonal import Ortogonal
+from ListaSimple import *
 
 class Window(Frame):
 
@@ -55,8 +58,54 @@ class Window(Frame):
     def fichero(self):
         
         self.archivo=fd.askopenfilename(initialdir = "/",title = "Seleccione archivo",filetypes = (("Archivo xml","*.xml"),("todos los archivos","*.*")))
-        print(self.fichero)
+        print(self.archivo)
+        self.tree = ET.parse(self.archivo)
+        self.root = self.tree.getroot()
+
         
+        self.lista = ListaSimple()
+
+       
+
+
+
+        for valores in self.root:
+            self.columna = 0
+            self.fila = -1
+            
+            matriz = Ortogonal()
+
+            for datos in valores:
+                
+                if datos.tag == "imagen":
+                    for self.simbolo in datos.text:
+                        if self.simbolo == "*":
+                            
+                            matriz.InsertarMatriz(self.fila,self.columna , self.simbolo)
+                            self.columna +=1
+                            
+                            
+                        elif self.simbolo == "-":
+                            self.columna +=1
+                        elif self.simbolo == "\n":
+                            self.columna = 0
+                            self.fila += 1 
+                elif datos.tag == "nombre":
+                    nombre = datos.text
+                elif datos.tag == "filas":
+                    filas = datos.text
+                elif datos.tag == "columnas":
+                    columnas = datos.text
+            self.lista.InsertarSimple(nombre,filas,columnas,matriz)
+
+            
+        self.lista.ImprimirSimple()
+       
+        
+        
+
+
+
 
 
 

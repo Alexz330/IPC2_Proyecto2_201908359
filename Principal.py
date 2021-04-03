@@ -9,7 +9,7 @@ def Inicio():
     matriz.InsertarMatriz(0, 2, "mesa")
     matriz.InsertarMatriz(0, 0, "avion")
 
-    matriz.recorrerColumnas()
+                   
     matriz.recorrerFilas()
 
 

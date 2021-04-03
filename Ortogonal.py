@@ -2,6 +2,7 @@ from ListaEncabezados import ListaEncabezados
 from NodoMatriz import Nodo
 from EncabezadoMatriz import Encabezado
 
+
 class Ortogonal:
     def __init__(self):
         self.encaFilas = ListaEncabezados()
