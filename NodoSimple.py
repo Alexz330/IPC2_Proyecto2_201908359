@@ -1,7 +1,7 @@
 class NodoSimple:
-    def __init__(self, nombre, filas, columnas,relleno):
+    def __init__(self, nombre, filas, columnas,matriz):
         self.nombre = nombre
         self.filas = filas
         self.columnas = columnas
-        self.relleno = relleno
+        self.matriz = matriz
         self.siguiente = None

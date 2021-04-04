@@ -3,7 +3,7 @@ from NodoMatriz import Nodo
 from EncabezadoMatriz import Encabezado
 
 
-class Ortogonal:
+class MatrizOrtogonal:
     def __init__(self):
         self.encaFilas = ListaEncabezados()
         self.encaColumnas = ListaEncabezados()
@@ -68,16 +68,33 @@ class Ortogonal:
         while(eFila != None):
             actual = eFila.acceso
             while(actual != None):
-                print(actual.valor + " en ",end=" ")
-                print("Fila: " + str(actual.fila),end="")
-                print("| Columna: " + str(actual.columna),end=" ")
+                print(actual.valor + "",end="")
+                #print("Fila: " + str(actual.fila),end="")
+                #print("| Columna: " + str(actual.columna),end="")
 
                 if(eFila.siguiente != None or actual.derecha != None):
-                    print("->",end=" ")
+                    print("|",end="")
 
                 actual=actual.derecha
-
+            print("")
             eFila=eFila.siguiente
+    
+    def obtenerPorFilaYColumna(self, fila, columna):
+        eFila=self.encaFilas.cabeza
+        while(eFila != None):
+            actual = eFila.acceso
+            while(actual != None):
+                #print(actual.valor + "",end="")
+                ##print("Fila: " + str(actual.fila),end="")
+                ##print("| Columna: " + str(actual.columna),end=" ")
+                if(actual.fila==fila and actual.columna == columna):
+                    return actual.valor
+                #if(eFila.siguiente != None or actual.derecha != None):
+                #    print("")
+
+                actual=actual.derecha
+            eFila=eFila.siguiente
+        return None
 
     def recorrerColumnas(self):
         eColumna = self.encaColumnas.cabeza

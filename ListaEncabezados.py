@@ -5,15 +5,7 @@ class ListaEncabezados:
         self.cabeza=None
 
     def Insertar(self, valor):
-        #nuevo = Encabezado(valor)
-        #if (self.cabeza == None):
-        #    self.cabeza=nuevo
-        #else:
-        #    auxiliar = self.cabeza
-        #    while auxiliar.siguiente != None:
-        #        auxiliar=auxiliar.siguiente
-        #    auxiliar.siguiente=nuevo
-        #    nuevo.anterior=auxiliar
+
         if(self.cabeza == None):
             self.cabeza=valor
         else:

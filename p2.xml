@@ -18,9 +18,7 @@
 			</imagen>
 	</matriz>
 	<matriz>
-		<nombre>Matriz_2</nombre>
-			<filas>8</filas>
-			<columnas>8</columnas>
+		<nombre>Matriz_2</nombre>			<filas>8</filas>			<columnas>8</columnas>
 			<imagen>
 				--------
 				-*-*-*-*
