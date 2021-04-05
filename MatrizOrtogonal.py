@@ -1,6 +1,7 @@
 from ListaEncabezados import ListaEncabezados
 from NodoMatriz import Nodo
 from EncabezadoMatriz import Encabezado
+import os
 
 
 class MatrizOrtogonal:
@@ -113,5 +114,38 @@ class MatrizOrtogonal:
             eColumna = eColumna.siguiente
 
 
+    def GMatriz(self, columnas):
+        contadorsito = 0
 
+        f = open('grafica.dot', 'w', encoding='utf-8')
+        f.write("digraph dibujo{\n")
+        f.write('tabla[shape = plaintext, fontsize = 10, label = <\n')
+        f.write('<TABLE BORDER = " 0" border  = "0" cellborder = "0">\n"')
+        
+        efila = self.encaFilas.cabeza
+        f.write('<tr>')
+        for x in range(columnas+1):
+            f.write('<td BGCOLOR="red">' + str(x) + '</td>')
+        f.write('</tr>')
 
+        while (efila != None):
+            ac = efila.acceso
+            f.write('<tr>')
+
+            while (ac != None):
+                if contadorsito == 0:
+                    f.write('<td BGCOLOR="red">'+str(ac.fila)+'</td>')
+                    contadorsito= contadorsito+1
+                f.write('<td>'+ str(ac.valor)+'</td>')
+                if (efila.siguiente != None or ac.derecha != None):
+                    pass
+                ac = ac.derecha
+            f.write('</tr>')
+            contadorsito =0
+            print("")
+            efila = efila.siguiente
+        f.write('</TABLE>\n')
+        f.write('>];')
+        f.write('}')
+        f.close()
+        os.system('dot -Tpng grafica.dot -o S.png')
