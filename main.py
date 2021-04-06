@@ -64,6 +64,9 @@ class Window(Frame):
 
         reportes.add_command(label="1. reporte", command= self.reporte)
 
+        ayuda.add_command(label="1. datos estudiante", command=self.datospersonales)
+        ayuda.add_command(label="2. documentacion", command=self.pdf)
+
         Graficar_btn = Button(self, text= "graficar" ,command=self.graficarMatriz)
         Graficar_btn.pack()
         Graficar_btn.place(x= 1000, y= 20)
@@ -501,6 +504,66 @@ class Window(Frame):
         f.close()
        
         webbrowser.open_new_tab('reporte.html')
+
+    def datospersonales(self):
+        f = open('datos.html','w')
+        f.write('<html>\n')
+    
+        f.write("""
+        <head>
+        <link rel="stylesheet" href="estilo.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <meta charset="utf-8"/>
+        </head>
+        """)
+        f.write('<body>\n')
+        f.write('<h1>Datos estudiante</h1>\n')
+
+    
+        f.write('<table class="table">\n' )
+        f.write('<thead class="thead-light">\n')
+        f.write('<tr>\n')
+        th = """ 
+            <th scope="col">nombre</th>
+            <th scope="col">apellido</th>
+            <th scope="col">carnet</th>
+            <th scope="col">seccion</th>
+            
+            """
+        f.write(th)
+        f.write('</tr>\n')
+        f.write('</thead>\n')       
+
+        f.write('<tbody>')
+       
+       
+            
+        f.write('<tr>\n')
+        f.write('<th>Alexis Marco Tulio </th>\n')
+        f.write('<th>Lopez Cacoj</th>\n')
+        f.write('<th>201908359</th>\n')
+        f.write('<th>E</th>\n')
+           
+    
+            
+        f.write('</tr>\n')
+            
+
+        f.write('</tbody>')
+        f.write('</table>\n' )
+
+
+        
+        f.write('</body>\n')
+        f.write('</html>\n')
+        f.close()
+       
+        webbrowser.open_new_tab('datos.html')
+
+    def pdf(self):
+         webbrowser.open_new_tab('documentacion.pdf')
+
+        
 if __name__ == '__main__':
     ventana = Tk()
     ventana.geometry("1500x720")
