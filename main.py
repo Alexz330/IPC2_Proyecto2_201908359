@@ -6,9 +6,12 @@ from ListaEncabezados import ListaEncabezados
 from MatrizOrtogonal import MatrizOrtogonal
 from Lista import *
 from tkinter import ttk
+from datetime import datetime
+import webbrowser
+import time
 
 
-
+reporte = ""
 
 class Window(Frame):
 
@@ -59,149 +62,70 @@ class Window(Frame):
         operaciones.add_command(label="10. interseccion", command= self.iterseccion)
 
 
+        reportes.add_command(label="1. reporte", command= self.reporte)
+
         Graficar_btn = Button(self, text= "graficar" ,command=self.graficarMatriz)
         Graficar_btn.pack()
         Graficar_btn.place(x= 1000, y= 20)
 
-       
-            
-    def aceptar(self):
-        global lista
-        
-       
-        # global lista
-        # global x
-        
-        # x = lista.buscar(self.NombreMatriz.get())
-        # y = lista.buscar("Matriz_2")
-        # x.matriz.recorrerFilas()
-        # matrizNueva = MatrizOrtogonal()
-        # matrizNuevaNueva = MatrizOrtogonal()
-        # matrizTranspuesta = MatrizOrtogonal()
-        # matrizBorrar = MatrizOrtogonal()
-        # matrizSuma = MatrizOrtogonal()
-        # matrizInterseccion = MatrizOrtogonal()
-        # matrizAgregarCuadrado = MatrizOrtogonal()
-
-
-
-        # print("\n ")
-
-        # filas = int(x.filas)
-        # columnas = int(x.columnas)
-        # for fila in range(filas):
-        #     print("")
-        #     for columna in range(columnas):
-        #         matrizNueva.InsertarMatriz(fila+1, columna, str(x.matriz.obtenerPorFilaYColumna(fila+1, columnas-1 - columna)))
-        
-        # for fila in range(filas):
-        #     print("")
-        #     for columna in range(columnas):
-        #         matrizNuevaNueva.InsertarMatriz(fila+1, columna, str(x.matriz.obtenerPorFilaYColumna(filas - fila, columna)))
-        
-        # for fila in range(filas):
-        #     print("")
-        #     for columna in range(columnas):
-        #         matrizTranspuesta.InsertarMatriz(columna,fila+1 , str(x.matriz.obtenerPorFilaYColumna(fila+1, columna)))
-        
-        # for fila in range(filas):
-        #     print("")
-        #     for columna in range(columnas):
-        #         if(fila>=1 and fila<=3 and columna>=1 and columna<=3):
-        #             matrizBorrar.InsertarMatriz(fila+1,columna , " ")
-        #         else:
-        #             matrizBorrar.InsertarMatriz(fila+1,columna , str(x.matriz.obtenerPorFilaYColumna(fila+1, columna)))
-
-        # for fila in range(filas):
-        #     print("")
-        #     for columna in range(columnas):
-        #         val1 = str(x.matriz.obtenerPorFilaYColumna(fila+1, columna))
-        #         val2 = str(y.matriz.obtenerPorFilaYColumna(fila+1, columna))
-        #         if(val1 == "*" or val2 == "*"):
-        #             matrizSuma.InsertarMatriz(fila+1,columna , "*")
-        #         else:
-        #             matrizSuma.InsertarMatriz(fila+1,columna , " ")
-
-        # for fila in range(filas):
-        #     print("")
-        #     for columna in range(columnas):
-        #         val1 = str(x.matriz.obtenerPorFilaYColumna(fila+1, columna))
-        #         val2 = str(y.matriz.obtenerPorFilaYColumna(fila+1, columna))
-        #         if(val1 == "*" and val2 == "*"):
-        #             matrizInterseccion.InsertarMatriz(fila+1,columna , "*")
-        #         else:
-        #             matrizInterseccion.InsertarMatriz(fila+1,columna , " ")
-                    
-        # for fila in range(filas):
-        #     print("")
-        #     for columna in range(columnas):
-        #         if((fila==1 or fila==1+8) or (columna==0 or columna==1+8)):
-        #             matrizAgregarCuadrado.InsertarMatriz(fila+1,columna , "*")
-        #         else:
-        #             matrizAgregarCuadrado.InsertarMatriz(fila+1,columna , str(x.matriz.obtenerPorFilaYColumna(fila+1, columna)))
-
-        # print("")
-        # print("")
-        # print("Matriz nueva")
-        # matrizNueva.recorrerFilas()
-
-        # print("")
-        # print("")
-        # print("Matriz nueva nueva")
-        # matrizNuevaNueva.recorrerFilas()
-
-        # print("")
-        # print("")
-        # print("Matriz transpuesta")
-        # matrizTranspuesta.recorrerFilas()
-
-        # matrizBorrar.recorrerFilas()
-        # matrizSuma.recorrerFilas()
-        # matrizInterseccion.recorrerFilas()
-        # matrizAgregarCuadrado.recorrerFilas()
-
     def fichero(self):
         global lista
+        global espacios_llenos
+        global espacios_vacios
+        global reporte
+        global f
+        global vacias
+        global llenas
+
         
         self.archivo=fd.askopenfilename(initialdir = "/",title = "Seleccione archivo",filetypes = (("Archivo xml","*.xml"),("todos los archivos","*.*")))
         print(self.archivo)
         self.tree = ET.parse(self.archivo)
         self.root = self.tree.getroot()
 
-        
+        reporte = ""
         lista = Lista()
-
+        vacias = []
+        llenas = []        
         for valores in self.root:
             columna = 0
             fila = 0
+
             
             matriz = MatrizOrtogonal()
-
+            espacios_llenos =0
+            espacios_vacios = 0
             for datos in valores:
                 
                 if datos.tag == "imagen":
                     for simbolo in datos.text:
                         if simbolo == "*":
-                            
+                            espacios_llenos +=1
+
                             matriz.InsertarMatriz(fila,columna , simbolo)
+                            
                             columna +=1
                             
                             
                         elif simbolo == "-":
+                            espacios_vacios +=1
                             matriz.InsertarMatriz(fila,columna , " ")
+                            
                             columna +=1
                         elif simbolo == "\n":
                             columna = 0
                             fila += 1 
                 elif datos.tag == "nombre":
                     nombre = datos.text
+                    
                 elif datos.tag == "filas":
                     filas = datos.text
                 elif datos.tag == "columnas":
                     columnas = datos.text
             lista.InsertarSimple(nombre,filas,columnas,matriz)
 
-            
+            llenas.append(espacios_llenos)
+            vacias.append(espacios_vacios)
         
 
         #combo box
@@ -224,20 +148,20 @@ class Window(Frame):
         
     def rotacionH(self):
         global lista
+        global reporte
 
         x = lista.buscar(self.NombreMatriz.get())
-        
-        matrizNueva = MatrizOrtogonal()
+        matriz1 = MatrizOrtogonal()
         filas = int(x.filas)
         columnas = int(x.columnas)
         
-        matrizNueva.GMatriz(columnas)
+        matriz1.GMatriz(columnas)
         for fila in range(filas):
             print("")
             for columna in range(columnas):
-                matrizNueva.InsertarMatriz(fila+1, columna, str(x.matriz.obtenerPorFilaYColumna(fila+1, columnas-1 - columna)))
+                matriz1.InsertarMatriz(fila+1, columna, str(x.matriz.obtenerPorFilaYColumna(fila+1, columnas-1 - columna)))
         print("Matriz nueva")
-        matrizNueva.GMatriz(columnas)
+        matriz1.GMatriz(columnas)
 
         # self.Lmatrizh = ttk.Label(self, text = "Matriz Rotada horizontal")
         # self.Lmatrizh.place(x= 410, y = 4)
@@ -245,23 +169,25 @@ class Window(Frame):
         self.lblImagen1 = Label(self, image = self.imagenL1)
       
         self.lblImagen1.place(x=400, y=20)
-
+        now=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime())
+        reporte = reporte + "<p>  Accion: rotacion horizontal: -" + x.nombre + " " + str(now) + " -</p>"
 
     def rotacionV(self):
         global lista
+        global reporte
 
         x = lista.buscar(self.NombreMatriz.get())
         
-        matrizNuevaNueva = MatrizOrtogonal()
+        matrizV = MatrizOrtogonal()
         filas = int(x.filas)
         columnas = int(x.columnas)
 
         for fila in range(filas):
             print("")
             for columna in range(columnas):
-                matrizNuevaNueva.InsertarMatriz(fila+1, columna, str(x.matriz.obtenerPorFilaYColumna(filas - fila, columna)))
+                matrizV.InsertarMatriz(fila+1, columna, str(x.matriz.obtenerPorFilaYColumna(filas - fila, columna)))
         
-        matrizNuevaNueva.GMatriz(columnas)
+        matrizV.GMatriz(columnas)
         
         # self.LmatrizV = ttk.Label(self, text = "Matriz Rotada vertical")
         # self.LmatrizV.place(x= 410, y = 4, width=100, height=10)
@@ -270,9 +196,11 @@ class Window(Frame):
       
         self.lblImagen2.place(x=400, y=20)
 
-
+        now=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime())
+        reporte = reporte + "<p>  Accion: rotacion vertical: -" + x.nombre + " " + str(now) + " -</p>"
     def transpuesta(self):
         global lista
+        global reporte
         x = lista.buscar(self.NombreMatriz.get())
         x.matriz.recorrerFilas()
         matrizTranspuesta = MatrizOrtogonal()
@@ -293,7 +221,10 @@ class Window(Frame):
       
         self.lblImagen3.place(x=400, y=20)
 
+        now=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime())
+        reporte = reporte + "<p>  Accion: Transpuesta: -" + x.nombre + " " + str(now) + " -</p>"
     def limpiar(self):
+        
         global cordenadax1
         global cordenaday1
         global cordenadax2
@@ -318,16 +249,14 @@ class Window(Frame):
         Aceptar_Btn = Button(self, text= "limpiar" ,command=self.btnLimpiar)
         Aceptar_Btn.pack()
         Aceptar_Btn.place(x= 300, y= 650)
-
-
-
-       
+        
     def btnLimpiar(self):
         global lista
         global cordenadax1
         global cordenaday1
         global cordenadax2
         global cordenaday2 
+        global reporte
 
 
         x = lista.buscar(self.NombreMatriz.get())
@@ -353,6 +282,8 @@ class Window(Frame):
       
         self.lblImagen4.place(x=400, y=20)
 
+        now=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime())
+        reporte = reporte + "<p>  Accion: limpiar: -" + x.nombre + " " + str(now) + " -</p>"
 
     def agregarLineaH(self):
         pass
@@ -394,6 +325,8 @@ class Window(Frame):
         global cordenadaxx2
         global cordenadayy1
         global cordenadayy2
+        global reporte
+
 
         x = lista.buscar(self.NombreMatriz.get())
         x.matriz.recorrerFilas()
@@ -405,12 +338,15 @@ class Window(Frame):
             print("")
             
             for columna in range(columnas):
-                if((fila==1 or fila==1+8) or (columna==0 or columna==1+8)):
-                # if(fila>int(cordenadaxx1.get()) and fila<int(cordenadaxx2.get()) and columna>int(cordenadayy1.get()) and columna<int(cordenadayy2.get())):
+                
+                if(fila>int(cordenadaxx1.get()) and fila<int(cordenadaxx2.get()) and columna>int(cordenadayy1.get()) and columna<int(cordenadayy2.get())):
                     matrizAgregarCuadrado.InsertarMatriz(fila+1,columna , "*")
                 else:
                     matrizAgregarCuadrado.InsertarMatriz(fila+1,columna , str(x.matriz.obtenerPorFilaYColumna(fila+1, columna)))
         matrizAgregarCuadrado.GMatriz() 
+
+        now=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime())
+        reporte = reporte + "<p>  Accion: agregar rectangulo: -" + x.nombre + " " + str(now) + " -</p>"
 
     def agregarTringunlo(self):
 
@@ -433,10 +369,9 @@ class Window(Frame):
       
         self.lblImagen.place(x=20, y=20)
 
-
-
     def Union(self):
         global lista
+        global reporte
         x = lista.buscar(self.NombreMatriz.get())
         y = lista.buscar(self.NombreMatriz1.get())
         filas = int(x.filas)
@@ -463,9 +398,13 @@ class Window(Frame):
       
         self.lblImagen5.place(x=400, y=20)
 
+        now=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime())
+        reporte = reporte + "<p>  Accion: union: -" + x.nombre + " a " +y.nombre +" "+ str(now) + " -</p>"
+
     def iterseccion(self):
-        
+        global reporte
         global lista
+
         x = lista.buscar(self.NombreMatriz.get())
         y = lista.buscar(self.NombreMatriz1.get())
         filas = int(x.filas)
@@ -490,11 +429,78 @@ class Window(Frame):
       
         self.lblImagen6.place(x=400, y=20)
 
+        now=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime())
+        reporte = reporte + "<p>  Accion: union: -" + x.nombre + " a " +y.nombre + " " + str(now) + " -</p>"
+
+    def reporte(self):
+        import time
+        global lista
+        global espacios_llenos
+        global espacios_vacios
+        global reporte
+        global llenas
+        global vacias
+        global f
+
+        f = open('reporte.html','w')
+        f.write('<html>\n')
+    
+        f.write("""
+        <head>
+        <link rel="stylesheet" href="estilo.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <meta charset="utf-8"/>
+        </head>
+        """)
+        f.write('<body>\n')
+        f.write('<h1>logs</h1>\n')
+
+        f.write('<h2>Matrices cargadas</h2>\n')
+        f.write('<table class="table">\n' )
+        f.write('<thead class="thead-light">\n')
+        f.write('<tr>\n')
+        th = """ 
+            <th scope="col">nombre</th>
+            <th scope="col">fecha</th>
+            <th scope="col">espacios vacios</th>
+            <th scope="col">espacios llenos</th>
+            
+            """
+        f.write(th)
+        f.write('</tr>\n')
+        f.write('</thead>\n')       
+
+        f.write('<tbody>')
+        cont = 0
+        for w in lista.ObtenerMatriz():
+            
+            f.write('<tr>\n')
+            f.write('   <th>'+ str(w) +'</th>\n')
+            now=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime())
+            f.write('<th>'+ now +'</th>\n')
+            
+            f.write('<th>'+ str(vacias[cont]) +'</th>\n')
+            f.write('<th>'+ str(llenas[cont]) +'</th>\n')
+
+            
+            f.write('</tr>\n')
+            cont += 1
+
+        f.write('</tbody>')
+        f.write('</table>\n' )
 
 
 
+      
+        f.write('<h2>Acciones</h2>')
 
-
+        f.write(reporte)
+        
+        f.write('</body>\n')
+        f.write('</html>\n')
+        f.close()
+       
+        webbrowser.open_new_tab('reporte.html')
 if __name__ == '__main__':
     ventana = Tk()
     ventana.geometry("1500x720")
