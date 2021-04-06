@@ -305,22 +305,22 @@ class Window(Frame):
         self.label3 = ttk.Label(self, text = "Introducir coordenadas")
 
         cordenadaxx1 = ttk.Entry(self, width=10)
-        cordenadaxx1.place(x=50, y=50)
+        cordenadaxx1.place(x=50, y=300)
 
         cordenadayy1 = ttk.Entry(self,width=10)
-        cordenadayy1.place(x=100, y=50)
+        cordenadayy1.place(x=100, y=300)
 
         cordenadaxx2 = ttk.Entry(self, width=10)
-        cordenadaxx2.place(x=200, y=50)
+        cordenadaxx2.place(x=200, y=300)
 
         cordenadayy2 = ttk.Entry(self,width=10)
-        cordenadayy2.place(x=250, y=50)
+        cordenadayy2.place(x=250, y=300)
 
         
 
         Aceptar_Btn = Button(self, text= "rectangulo" ,command=self.btnRectangulo)
         Aceptar_Btn.pack()
-        Aceptar_Btn.place(x= 500, y= 350)
+        Aceptar_Btn.place(x= 260, y= 400)
         
     def btnRectangulo(self):
         global lista
